@@ -40,7 +40,7 @@ var program = commander
   .version(require('./package.json').version)
   .arguments('<project-directory>')
   .usage(chalk.green('<project-directory>') + ' [options]')
-  .option('-u, --upgrade', '升级项目到tiger-new最新构建版本')
+  .option('-u, --upgrade', '升级项目到fw-create-h5最新构建版本')
   .action(function (name) {
     projectName = name;
   })
@@ -76,13 +76,7 @@ if (program.upgrade) {
         validate: function (input) {
           return semver.valid(input) ? true : chalk.cyan(input) + ' 不是一个有效的版本号';
         }
-      },
-      /*       {
-              name: 'useCdn',
-              type: 'confirm',
-              message: '该项目是否需要托管静态资源到cdn服务器?' + chalk.grey('（默认仅支持ssh rsync方式上传到cdn）'),
-              default: false
-            } */
+      }
     ])
     .then(function (answers) {
       var questions = [
