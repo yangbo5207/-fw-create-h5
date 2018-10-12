@@ -49,50 +49,48 @@ function appUpgrade(projectName) {
     ])
     .then(answers => {
       if (answers.upgrade) {
-        run(root, projectName);
+        var questions = [];
 
-        // var questions = [];
+        questions.push({
+          name: 'install',
+          type: 'confirm',
+          message:
+            '由于安装以及升级了部分依赖，为了保证项目正常运行，需要重新安装所有依赖，请确认是否继续？\n' +
+            chalk.dim('该操作将会： 1. 删除 node_modules 目录; 2. 重新运行 npm install 命令') +
+            '\n',
+          default: false
+        });
 
-        // questions.push({
-        //   name: 'install',
-        //   type: 'confirm',
-        //   message:
-        //     '由于安装以及升级了部分依赖，为了保证项目正常运行，需要重新安装所有依赖，请确认是否继续？\n' +
-        //     chalk.dim('该操作将会： 1. 删除 node_modules 目录; 2. 重新运行 npm install 命令') +
-        //     '\n',
-        //   default: false
-        // });
+        inquirer.prompt(questions).then(answers => {
+          console.log();
 
-        // inquirer.prompt(questions).then(answers => {
-        //   console.log();
+          newPackageFile.name = oldPackageFile.name;
+          newPackageFile.version = oldPackageFile.version;
+          newPackageFile.description = oldPackageFile.description;
+          newPackageFile.author = oldPackageFile.author;
 
-        //   newPackageFile.name = oldPackageFile.name;
-        //   newPackageFile.version = oldPackageFile.version;
-        //   newPackageFile.description = oldPackageFile.description;
-        //   newPackageFile.author = oldPackageFile.author;
+          fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify(newPackageFile, null, 2));
 
-        //   fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify(newPackageFile, null, 2));
+          if (answers.install) {
+            process.chdir(root);
+            spinner.text = '删除 node_modules ...';
+            spinner.start();
+            fs.removeSync(path.join(root, 'node_modules'));
+            spinner.stop();
+            spinner.succeed('删除 node_modules 目录成功！即将重新安装所有依赖...');
 
-        //   if (answers.install) {
-        //     process.chdir(root);
-        //     spinner.text = '删除 node_modules ...';
-        //     spinner.start();
-        //     fs.removeSync(path.join(root, 'node_modules'));
-        //     spinner.stop();
-        //     spinner.succeed('删除 node_modules 目录成功！即将重新安装所有依赖...');
-
-        //     install(function () {
-        //       console.log();
-        //       spinner.succeed('恭喜！项目升级成功！全部依赖已成功重新安装！');
-        //     });
-        //   } else {
-        //     console.log();
-        //     spinner.succeed(
-        //       '项目升级成功！但是你可能需要重新手动安装确实的依赖。\n  运行 ' +
-        //       chalk.green((shouldUseYarn() ? 'yarn' : 'npm') + ' install')
-        //     );
-        //   }
-        // });
+            install(function () {
+              console.log();
+              spinner.succeed('恭喜！项目升级成功！全部依赖已成功重新安装！');
+            });
+          } else {
+            console.log();
+            spinner.succeed(
+              '项目升级成功！但是你可能需要重新手动安装确实的依赖。\n  运行 ' +
+              chalk.green((shouldUseYarn() ? 'yarn' : 'npm') + ' install')
+            );
+          }
+        });
       } else {
         spinner.fail('升级已取消！');
       }
