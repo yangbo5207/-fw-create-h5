@@ -1,6 +1,6 @@
 {
   "name": "fw-create-h5",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "用于创建html5项目",
   "main": "index.js",
   "dependencies": {
