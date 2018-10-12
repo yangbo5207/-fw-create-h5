@@ -1,7 +1,7 @@
 {
-  "name": "fw-new",
-  "version": "1.0.4",
-  "description": "fw fed cli",
+  "name": "fw-create-h5",
+  "version": "1.0.0",
+  "description": "用于创建html5项目",
   "main": "index.js",
   "dependencies": {
     "chalk": "^1.1.3",
@@ -20,9 +20,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:bledeGitHub92/fw-new.git"
+    "url": "git@github.com:yangbo5207/fw-create-h5.git"
   },
-  "author": "fw",
+  "author": "yangbo",
   "license": "ISC",
   "files": [
     "index.js",
