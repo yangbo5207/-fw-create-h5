@@ -28,12 +28,12 @@ function appUpgrade(projectName) {
     process.exit();
   }
 
-  console.log('正在检查版本号是否变化');
-  if (newPackageFile.version === oldPackageFile.version) {
-    console.log('脚手架没有新内容');
-    process.exit();
-    return;
-  }
+  // console.log('正在检查版本号是否变化');
+  // if (newPackageFile.version === oldPackageFile.version) {
+  //   console.log('脚手架没有新内容');
+  //   process.exit();
+  //   return;
+  // }
 
   inquirer
     .prompt([
